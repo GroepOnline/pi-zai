@@ -1,22 +1,2 @@
 version: 2
-updates:
-  - package-ecosystem: npm
-    directory: /
-    schedule:
-      interval: weekly
-    groups:
-      pi-packages:
-        patterns:
-          - "@earendil-works/*"
-          - "@biomejs/*"
-          - "typescript"
-          - "vitest"
-  - package-ecosystem: npm
-    directory: /worker/telemetry
-    schedule:
-      interval: weekly
-    groups:
-      cloudflare:
-        patterns:
-          - "wrangler"
-          - "@cloudflare/*"
+updates: []
