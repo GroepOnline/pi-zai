@@ -1,5 +1,5 @@
 {
-	"name": "@onlinechefgroep/pi-zai",
+	"name": "@groeponline/pi-zai",
 	"version": "0.5.4",
 	"description": "Z.AI cache visibility, native request diagnostics, and local operator metrics for Pi",
 	"type": "module",
@@ -7,7 +7,7 @@
 	"author": "Online Chef Groep",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/OnlineChefGroep/pi-zai"
+		"url": "https://github.com/GroepOnline/pi-zai"
 	},
 	"publishConfig": {
 		"access": "public",

@@ -4,7 +4,7 @@
 
 ### What this repo is
 
-`@onlinechefgroep/pi-zai` is a **Pi extension** (a TypeScript ESM npm library), not a
+`@groeponline/pi-zai` is a **Pi extension** (a TypeScript ESM npm library), not a
 standalone server. It hooks into Pi's agent loop to add Z.AI cache visibility,
 request diagnostics, and local operator metrics (`/zai`, `/zai-cache`,
 `/zai-data`, etc.). There is **no long-running service and no port to open** —
@@ -47,7 +47,7 @@ metrics store.
 - Live cache-affinity benchmark (`npm run benchmark:cache-affinity`) needs a real
   `ZAI_API_KEY` and network.
 - Telemetry worker deploy needs `CLOUDFLARE_API_TOKEN` + `CLOUDFLARE_ACCOUNT_ID`.
-- GitHub Packages mirror ([pkgs/npm/pi-zai](https://github.com/OnlineChefGroep/pi-zai/pkgs/npm/pi-zai)):
+- GitHub Packages mirror ([pkgs/npm/pi-zai](https://github.com/GroepOnline/pi-zai/pkgs/npm/pi-zai)):
   published by `release.yml` / `publish-npm.yml` with `packages: write`. Primary
   install path remains public npmjs; GH Packages needs `read:packages`. Cloud
   agent tokens often cannot read/write org packages — use Actions

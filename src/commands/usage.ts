@@ -106,7 +106,7 @@ export function registerZaiUsageCommand(
 
 			const lines = [
 				"Z.AI usage",
-				`Extension: @onlinechefgroep/pi-zai ${deps.extensionVersion}`,
+				`Extension: @groeponline/pi-zai ${deps.extensionVersion}`,
 				"",
 				"Pi native token accounting",
 				`  Requests: ${sessionTotals.requests}`,

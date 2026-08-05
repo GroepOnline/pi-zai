@@ -11,22 +11,22 @@
 Primary (public npmjs):
 
 ```bash
-pi install npm:@onlinechefgroep/pi-zai
+pi install npm:@groeponline/pi-zai
 ```
 
-Optional mirror — [GitHub Packages](https://github.com/OnlineChefGroep/pi-zai/pkgs/npm/pi-zai)
+Optional mirror — [GitHub Packages](https://github.com/GroepOnline/pi-zai/pkgs/npm/pi-zai)
 (requires a GitHub PAT or `GITHUB_TOKEN` with `read:packages`).
 
-This remaps the **entire** `@onlinechefgroep` scope to GitHub Packages, not only
+This remaps the **entire** `@groeponline` scope to GitHub Packages, not only
 `pi-zai`. Prefer a user-level `~/.npmrc` (not a committed project `.npmrc`) so
-other `@onlinechefgroep/*` packages on npmjs keep resolving normally:
+other `@groeponline/*` packages on npmjs keep resolving normally:
 
 ```bash
 # ~/.npmrc
-@onlinechefgroep:registry=https://npm.pkg.github.com
+@groeponline:registry=https://npm.pkg.github.com
 //npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}
 
-pi install npm:@onlinechefgroep/pi-zai
+pi install npm:@groeponline/pi-zai
 ```
 
 Then reload Pi:

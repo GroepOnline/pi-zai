@@ -187,7 +187,7 @@ export function registerZaiDoctorCommand(
 			checks.push({
 				name: "Extension loaded",
 				status: "pass",
-				detail: `@onlinechefgroep/pi-zai ${deps.extensionVersion}`,
+				detail: `@groeponline/pi-zai ${deps.extensionVersion}`,
 			});
 
 			checks.push({

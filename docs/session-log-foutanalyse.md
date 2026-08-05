@@ -441,7 +441,7 @@ Command aborted
 - **Provider:** `zai`
 - **Fout-type:** CONN-ERR
 - **Fout-bericht:** `Connection error.`
-- **Gebruikersvraag:** firefox startt niet eens en zellij maar liever herdr van fork org onlinechefgroep
+- **Gebruikersvraag:** firefox startt niet eens en zellij maar liever herdr van fork org groeponline
 - **Context (ervoor):** === Leftover snap firefox desktop files? ===
 
 === Which firefox.desktop is used ===
@@ -460,7 +460,7 @@ Exec=fi
 - **Provider:** `zai`
 - **Fout-type:** CONN-ERR
 - **Fout-bericht:** `Connection error.`
-- **Gebruikersvraag:** firefox startt niet eens en zellij maar liever herdr van fork org onlinechefgroep
+- **Gebruikersvraag:** firefox startt niet eens en zellij maar liever herdr van fork org groeponline
 - **Context (ervoor):** === apparmor-utils available? ===
 /usr/sbin/aa-status
 not installed, installing...
@@ -477,7 +477,7 @@ No VM guests are running outdated hypervisor (qemu) binaries on this host.
 - **Provider:** `zai`
 - **Fout-type:** CONN-ERR
 - **Fout-bericht:** `Connection error.`
-- **Gebruikersvraag:** firefox startt niet eens en zellij maar liever herdr van fork org onlinechefgroep
+- **Gebruikersvraag:** firefox startt niet eens en zellij maar liever herdr van fork org groeponline
 - **Context (ervoor):** === Firefox launch test (headless, 6s) ===
 *** You are running in headless mode.
 [GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
@@ -493,7 +493,7 @@ No VM guests are running outdated hypervisor (qemu) binaries on this host.
 - **Provider:** `zai`
 - **Fout-type:** CONN-ERR
 - **Fout-bericht:** `Connection error.`
-- **Gebruikersvraag:** firefox startt niet eens en zellij maar liever herdr van fork org onlinechefgroep
+- **Gebruikersvraag:** firefox startt niet eens en zellij maar liever herdr van fork org groeponline
 - **Context (ervoor):** === Remove the duplicate/stale firefox apparmor profile ===
 -rw-r--r-- 1 root root 430 Apr  8 17:26 /etc/apparmor.d/firefox
 ✓ removed stale /etc/apparmor.d/firefox
@@ -508,7 +508,7 @@ No VM guests are running outdated hypervisor (qemu) binaries on this host.
 - **Provider:** `zai`
 - **Fout-type:** CONN-ERR
 - **Fout-bericht:** `Connection error.`
-- **Gebruikersvraag:** firefox startt niet eens en zellij maar liever herdr van fork org onlinechefgroep
+- **Gebruikersvraag:** firefox startt niet eens en zellij maar liever herdr van fork org groeponline
 - **Sessie:** `/home-joep/`
 - **Bron:** JSONL
 
@@ -518,7 +518,7 @@ No VM guests are running outdated hypervisor (qemu) binaries on this host.
 - **Provider:** `zai`
 - **Fout-type:** CONN-ERR
 - **Fout-bericht:** `Connection error.`
-- **Gebruikersvraag:** firefox startt niet eens en zellij maar liever herdr van fork org onlinechefgroep
+- **Gebruikersvraag:** firefox startt niet eens en zellij maar liever herdr van fork org groeponline
 - **Sessie:** `/home-joep/`
 - **Bron:** JSONL
 
@@ -528,7 +528,7 @@ No VM guests are running outdated hypervisor (qemu) binaries on this host.
 - **Provider:** `zai`
 - **Fout-type:** ABORTED
 - **Fout-bericht:** `Operation aborted`
-- **Gebruikersvraag:** firefox startt niet eens en zellij maar liever herdr van fork org onlinechefgroep
+- **Gebruikersvraag:** firefox startt niet eens en zellij maar liever herdr van fork org groeponline
 - **Context (ervoor):** (no output)
 - **Sessie:** `/home-joep/`
 - **Bron:** JSONL

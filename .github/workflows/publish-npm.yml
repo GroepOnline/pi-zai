@@ -1,4 +1,4 @@
-# Manual tag-push fallback for @onlinechefgroep/pi-zai.
+# Manual tag-push fallback for @groeponline/pi-zai.
 # Publishes to npmjs.org and mirrors to GitHub Packages.
 # Primary path is release.yml. A tag created with GITHUB_TOKEN by release.yml
 # does not re-trigger this workflow. Idempotent per registry. npmjs needs
@@ -12,7 +12,7 @@ on:
 
 jobs:
   npmjs:
-    if: github.repository == 'OnlineChefGroep/pi-zai'
+    if: github.repository == 'GroepOnline/pi-zai'
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -39,7 +39,7 @@ jobs:
         env:
           PACKAGE_VERSION: ${{ steps.package.outputs.version }}
         run: |
-          if npm view "@onlinechefgroep/pi-zai@$PACKAGE_VERSION" version --json >/dev/null 2>&1; then
+          if npm view "@groeponline/pi-zai@$PACKAGE_VERSION" version --json >/dev/null 2>&1; then
             echo "published=true" >> "$GITHUB_OUTPUT"
           else
             echo "published=false" >> "$GITHUB_OUTPUT"
@@ -65,7 +65,7 @@ jobs:
         run: npm publish --access public --provenance
 
   github-packages:
-    if: github.repository == 'OnlineChefGroep/pi-zai'
+    if: github.repository == 'GroepOnline/pi-zai'
     runs-on: ubuntu-latest
     permissions:
       contents: read

@@ -1,8 +1,8 @@
 name: Release
 
-# Primary publish path for @onlinechefgroep/pi-zai.
+# Primary publish path for @groeponline/pi-zai.
 # Publishes to npmjs.org (public) and mirrors to GitHub Packages
-# (https://github.com/OnlineChefGroep/pi-zai/pkgs/npm/pi-zai).
+# (https://github.com/GroepOnline/pi-zai/pkgs/npm/pi-zai).
 # Jobs are independent: a GitHub Packages failure never blocks npmjs or the
 # GitHub Release/tag. Triggers on package identity / changelog changes on main,
 # or via workflow_dispatch (backfill GH Packages when npmjs already has the
@@ -24,7 +24,7 @@ concurrency:
 
 jobs:
   npmjs:
-    if: github.repository == 'OnlineChefGroep/pi-zai'
+    if: github.repository == 'GroepOnline/pi-zai'
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -104,7 +104,7 @@ jobs:
           fi
 
   github-packages:
-    if: github.repository == 'OnlineChefGroep/pi-zai'
+    if: github.repository == 'GroepOnline/pi-zai'
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -145,7 +145,7 @@ jobs:
         run: bash scripts/ci/github-packages.sh publish
 
   github-release:
-    if: github.repository == 'OnlineChefGroep/pi-zai'
+    if: github.repository == 'GroepOnline/pi-zai'
     needs: [npmjs]
     runs-on: ubuntu-latest
     permissions:

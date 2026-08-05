@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to `@onlinechefgroep/pi-zai` are documented in this file.
+All notable changes to `@groeponline/pi-zai` are documented in this file.
 
 ## [Unreleased]
 
@@ -8,8 +8,8 @@ All notable changes to `@onlinechefgroep/pi-zai` are documented in this file.
 
 ### Added
 
-- Release workflows now also publish `@onlinechefgroep/pi-zai` to GitHub Packages
-  (`https://github.com/OnlineChefGroep/pi-zai/pkgs/npm/pi-zai`) via a separate
+- Release workflows now also publish `@groeponline/pi-zai` to GitHub Packages
+  (`https://github.com/GroepOnline/pi-zai/pkgs/npm/pi-zai`) via a separate
   job (`scripts/ci/github-packages.sh`) so a mirror failure never blocks npmjs
   or the GitHub Release/tag. Re-run `Release` via `workflow_dispatch` to
   backfill a version that is already on npmjs.

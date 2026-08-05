@@ -102,7 +102,7 @@ export function registerZaiStatusCommand(
 				...formatHeading("Z.AI status"),
 				formatKeyValue(
 					"Extension",
-					`@onlinechefgroep/pi-zai ${deps.extensionVersion}`,
+					`@groeponline/pi-zai ${deps.extensionVersion}`,
 				),
 				formatKeyValue("Provider", model.provider),
 				formatKeyValue("Endpoint", getEndpointLabel(model)),
