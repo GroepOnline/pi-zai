@@ -2,7 +2,7 @@
 // Filtered npm-audit gate for the optional worker/telemetry subproject.
 //
 // Context: `worker/telemetry` is a private, optional Cloudflare Worker. It is
-// excluded from the published `@onlinechefgroep/pi-zai` npm tarball (see the
+// excluded from the published `@groeponline/pi-zai` npm tarball (see the
 // root `package.json` `files` allowlist), so its dev-only dependencies never
 // reach consumers. Its only high-severity exposure is `sharp < 0.35.0`, pulled
 // transitively through `wrangler -> miniflare`. Cloudflare's published

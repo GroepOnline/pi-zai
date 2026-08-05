@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# GitHub Packages helper for @onlinechefgroep/* mirrors.
+# GitHub Packages helper for @groeponline/* mirrors.
 #
 # Usage:
 #   scripts/ci/github-packages.sh check
@@ -39,7 +39,7 @@ cleanup() { rm -f "$userconfig"; }
 trap cleanup EXIT
 
 {
-	printf '%s\n' "@onlinechefgroep:registry=${REGISTRY}"
+	printf '%s\n' "@groeponline:registry=${REGISTRY}"
 	printf '%s\n' "//npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}"
 } >"$userconfig"
 

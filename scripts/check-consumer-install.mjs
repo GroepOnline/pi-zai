@@ -17,7 +17,7 @@ const npmCommand = process.platform === "win32" ? "npm.cmd" : "npm";
 const tempRoot = mkdtempSync(join(tmpdir(), "pi-zai-consumer-install-"));
 const packDirectory = join(tempRoot, "pack");
 const consumerDirectory = join(tempRoot, "consumer");
-const extensionPackage = "@onlinechefgroep/pi-zai";
+const extensionPackage = "@groeponline/pi-zai";
 const hostPackage = "@earendil-works/pi-coding-agent";
 const leakedPackages = [
 	hostPackage,
