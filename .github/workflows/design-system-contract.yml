@@ -8,9 +8,9 @@ jobs:
   validate:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Checkout pinned design-system validator
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           repository: GroepOnline/design-system
           ref: c5bd56088b4e58425440e816189759d0862eb2b9
