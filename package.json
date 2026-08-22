@@ -4,10 +4,14 @@
 	"description": "Z.AI cache visibility, native request diagnostics, and local operator metrics for Pi",
 	"type": "module",
 	"license": "MIT",
-	"author": "Online Chef Groep",
+	"author": "GroepOnline",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/GroepOnline/pi-zai"
+		"url": "git+https://github.com/GroepOnline/pi-zai.git"
+	},
+	"homepage": "https://pi.dev/packages/@groeponline/pi-zai",
+	"bugs": {
+		"url": "https://github.com/GroepOnline/pi-zai/issues"
 	},
 	"publishConfig": {
 		"access": "public",
@@ -31,7 +35,8 @@
 	"pi": {
 		"extensions": [
 			"./dist/extension.js"
-		]
+		],
+		"image": "https://raw.githubusercontent.com/GroepOnline/pi-zai/main/docs/images/pi-zai-hero.svg"
 	},
 	"exports": {
 		".": {

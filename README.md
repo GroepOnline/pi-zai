@@ -22,6 +22,8 @@ Pi already owns the agent loop, tools, sessions, streaming, and Z.AI provider. *
 pi install npm:@groeponline/pi-zai
 ```
 
+Catalog: [pi.dev package page](https://pi.dev/packages/@groeponline/pi-zai).
+
 Also published to [GitHub Packages](https://github.com/GroepOnline/pi-zai/pkgs/npm/pi-zai) (see [Getting started](docs/getting-started.md) for the authenticated `@groeponline` registry setup).
 
 Reload Pi, select a Z.AI model, and open the status view:
