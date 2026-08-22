@@ -1,96 +1,95 @@
 {
-  "name": "@groeponline/pi-zai",
-  "version": "0.5.5",
-  "description": "Z.AI/GLM operator visibility for Pi: prompt-cache metrics, native request diagnostics, thinking traces, and local usage telemetry.",
-  "type": "module",
-  "license": "MIT",
-  "author": "GroepOnline",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/GroepOnline/pi-zai.git"
-  },
-  "homepage": "https://github.com/GroepOnline/pi-zai#readme",
-  "bugs": {
-    "url": "https://github.com/GroepOnline/pi-zai/issues"
-  },
-  "publishConfig": {
-    "access": "public",
-    "registry": "https://registry.npmjs.org"
-  },
-  "keywords": [
-    "pi-package",
-    "pi",
-    "pi-extension",
-    "pi-coding-agent",
-    "z.ai",
-    "glm",
-    "coding-agent",
-    "cache",
-    "llm",
-    "groeponline",
-    "prompt-cache",
-    "diagnostics",
-    "observability",
-    "operator-tools",
-    "usage-metrics"
-  ],
-  "engines": {
-    "node": ">=22.19.0"
-  },
-  "pi": {
-    "extensions": [
-      "./dist/extension.js"
-    ],
-    "image": "https://raw.githubusercontent.com/GroepOnline/pi-zai/main/docs/images/pi-zai-hero.png"
-  },
-  "exports": {
-    ".": {
-      "types": "./dist/extension.d.ts",
-      "import": "./dist/extension.js"
-    }
-  },
-  "files": [
-    "dist",
-    "docs",
-    "README.md",
-    "CHANGELOG.md",
-    "LICENSE"
-  ],
-  "scripts": {
-    "clean": "shx rm -rf dist",
-    "prebuild": "node scripts/generate-version.mjs",
-    "build": "tsc -p tsconfig.build.json",
-    "lint": "biome check .",
-    "lint:fix": "biome check --write .",
-    "test": "vitest --run",
-    "check:version": "node scripts/generate-version.mjs --check",
-    "check:package": "npm pack --dry-run --json && npm run verify:pi-package",
-    "check:consumer-install": "node scripts/check-consumer-install.mjs",
-    "benchmark:cache-affinity": "npm run build && node scripts/cache-affinity-ab.mjs",
-    "prepublishOnly": "npm run clean && npm run check:version && npm run build && npm run lint && npm run test && npm run check:consumer-install && npm run verify:pi-package",
-    "verify:pi-package": "node scripts/verify-pi-package-contract.mjs"
-  },
-  "devDependencies": {
-    "@biomejs/biome": "^2.0.6",
-    "@earendil-works/pi-agent-core": "0.81.1",
-    "@earendil-works/pi-ai": "0.81.1",
-    "@earendil-works/pi-coding-agent": "0.81.1",
-    "@types/node": "26.1.1",
-    "shx": "0.4.0",
-    "typescript": "7.0.2",
-    "vitest": "4.1.10",
-    "typebox": "^1.1.38"
-  },
-  "peerDependencies": {
-    "@earendil-works/pi-coding-agent": "*",
-    "@earendil-works/pi-ai": "*",
-    "@earendil-works/pi-agent-core": "*",
-    "typebox": "*"
-  },
-  "peerDependenciesMeta": {
-    "@earendil-works/pi-coding-agent": {
-      "optional": true
-    }
-  },
-  "dependencies": {}
+	"name": "@groeponline/pi-zai",
+	"version": "0.5.5",
+	"description": "Z.AI/GLM operator visibility for Pi: prompt-cache metrics, native request diagnostics, thinking traces, and local usage telemetry.",
+	"type": "module",
+	"license": "MIT",
+	"author": "GroepOnline",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/GroepOnline/pi-zai.git"
+	},
+	"homepage": "https://github.com/GroepOnline/pi-zai#readme",
+	"bugs": {
+		"url": "https://github.com/GroepOnline/pi-zai/issues"
+	},
+	"publishConfig": {
+		"access": "public",
+		"registry": "https://registry.npmjs.org"
+	},
+	"keywords": [
+		"pi-package",
+		"pi",
+		"pi-extension",
+		"pi-coding-agent",
+		"z.ai",
+		"glm",
+		"coding-agent",
+		"cache",
+		"llm",
+		"groeponline",
+		"prompt-cache",
+		"diagnostics",
+		"observability",
+		"operator-tools",
+		"usage-metrics"
+	],
+	"engines": {
+		"node": ">=22.19.0"
+	},
+	"pi": {
+		"extensions": [
+			"./dist/extension.js"
+		],
+		"image": "https://raw.githubusercontent.com/GroepOnline/pi-zai/main/docs/images/pi-zai-hero.png"
+	},
+	"exports": {
+		".": {
+			"types": "./dist/extension.d.ts",
+			"import": "./dist/extension.js"
+		}
+	},
+	"files": [
+		"dist",
+		"docs",
+		"README.md",
+		"CHANGELOG.md",
+		"LICENSE"
+	],
+	"scripts": {
+		"clean": "shx rm -rf dist",
+		"prebuild": "node scripts/generate-version.mjs",
+		"build": "tsc -p tsconfig.build.json",
+		"lint": "biome check .",
+		"lint:fix": "biome check --write .",
+		"test": "vitest --run",
+		"check:version": "node scripts/generate-version.mjs --check",
+		"check:package": "npm pack --dry-run --json && npm run verify:pi-package",
+		"check:consumer-install": "node scripts/check-consumer-install.mjs",
+		"benchmark:cache-affinity": "npm run build && node scripts/cache-affinity-ab.mjs",
+		"prepublishOnly": "npm run clean && npm run check:version && npm run build && npm run lint && npm run test && npm run check:consumer-install && npm run verify:pi-package",
+		"verify:pi-package": "node scripts/verify-pi-package-contract.mjs"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "^2.0.6",
+		"@earendil-works/pi-agent-core": "0.81.1",
+		"@earendil-works/pi-ai": "0.81.1",
+		"@earendil-works/pi-coding-agent": "0.81.1",
+		"@types/node": "26.1.1",
+		"shx": "0.4.0",
+		"typescript": "7.0.2",
+		"vitest": "4.1.10",
+		"typebox": "^1.1.38"
+	},
+	"peerDependencies": {
+		"@earendil-works/pi-ai": "*",
+		"@earendil-works/pi-agent-core": "*",
+		"@earendil-works/pi-coding-agent": "*",
+		"typebox": "*"
+	},
+	"peerDependenciesMeta": {
+		"@earendil-works/pi-coding-agent": {
+			"optional": true
+		}
+	}
 }
