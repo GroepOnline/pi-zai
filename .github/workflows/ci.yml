@@ -118,6 +118,7 @@ jobs:
           BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
           SHA: ${{ github.sha }}
         run: |
+          set -euo pipefail
           SHORT_SHA="${SHA:0:7}"
           BODY="Workflow **${WORKFLOW_NAME}** failed in [pi-zai](https://github.com/GroepOnline/pi-zai)
 
@@ -130,7 +131,7 @@ jobs:
             --arg title "$TITLE" \
             --arg description "$BODY" \
             '{
-              query: "mutation($input: IssueCreateInput!) { issueCreate(input: $input) { issue { id identifier } } }",
+              query: "mutation($input: IssueCreateInput!) { issueCreate(input: $input) { success issue { id identifier } } }",
               variables: {
                 input: {
                   title: $title,
@@ -141,8 +142,18 @@ jobs:
                 }
               }
             }' \
-            | curl -s -X POST https://api.linear.app/graphql \
+            | curl --fail --silent --show-error -X POST https://api.linear.app/graphql \
               -H "Content-Type: application/json" \
               -H "Authorization: $LINEAR_API_KEY" \
               --data-binary @- \
-            | jq -r '.data.issueCreate.issue.identifier // "failed"'
+            | jq -er '
+                if ((.errors // []) | length) > 0 then
+                  error("Linear GraphQL mutation failed")
+                elif (.data.issueCreate.success // true) == false then
+                  error("Linear issueCreate reported success=false")
+                elif .data.issueCreate.issue.identifier then
+                  .data.issueCreate.issue.identifier
+                else
+                  error("Linear response did not include an issue identifier")
+                end
+              '
