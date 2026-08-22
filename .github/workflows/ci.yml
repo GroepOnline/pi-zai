@@ -116,6 +116,10 @@ jobs:
           SHA: ${{ github.sha }}
         run: |
           set -euo pipefail
+          if [ -z "${LINEAR_API_KEY:-}" ]; then
+            echo "LINEAR_API_KEY secret not configured — skipping Linear notification (fail-open)"
+            exit 0
+          fi
           SHORT_SHA="${SHA:0:7}"
           BODY="Workflow **${WORKFLOW_NAME}** failed in [pi-zai](https://github.com/GroepOnline/pi-zai)
 
