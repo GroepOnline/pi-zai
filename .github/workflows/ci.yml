@@ -113,11 +113,36 @@ jobs:
       - env:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           TITLE: "CI Failure: ${{ github.workflow }} in pi-zai"
-          RUN_URL: "https://github.com/GroepOnline/pi-zai/actions/runs/${{ github.run_id }}"
+          RUN_URL: https://github.com/GroepOnline/pi-zai/actions/runs/${{ github.run_id }}
+          WORKFLOW_NAME: ${{ github.workflow }}
+          BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+          SHA: ${{ github.sha }}
         run: |
-          curl -s -X POST https://api.linear.app/graphql \
-            -H "Content-Type: application/json" \
-            -H "Authorization: $LINEAR_API_KEY" \
-            --data-raw '{
-              "query": "mutation { issueCreate(input: { title: "'"$TITLE"'", description: "Workflow **'"${{ github.workflow }}"'** failed in ['"pi-zai'](https://github.com/GroepOnline/pi-zai)\n\nRun: '""$RUN_URL""'\nBranch: '"${{ github.head_ref || github.ref_name }}"'\nSHA: '"${{ github.sha.substring(0,7) }}"'\n\nCreated automatically by CI failure tracker.", teamId: "bbd2b9e0-e644-4717-9074-8d0eaa3f150a", priority: 2, labelIds: ["713eee90-d169-40a6-98b8-7c71502b9855"] }) { issue { id identifier } } }"
-            }' | jq -r '.data.issueCreate.issue.identifier // "failed"'
+          SHORT_SHA="${SHA:0:7}"
+          BODY="Workflow **${WORKFLOW_NAME}** failed in [pi-zai](https://github.com/GroepOnline/pi-zai)
+
+          Run: ${RUN_URL}
+          Branch: ${BRANCH_NAME}
+          SHA: ${SHORT_SHA}
+
+          Created automatically by CI failure tracker."
+          jq -n \
+            --arg title "$TITLE" \
+            --arg description "$BODY" \
+            '{
+              query: "mutation($input: IssueCreateInput!) { issueCreate(input: $input) { issue { id identifier } } }",
+              variables: {
+                input: {
+                  title: $title,
+                  description: $description,
+                  teamId: "bbd2b9e0-e644-4717-9074-8d0eaa3f150a",
+                  priority: 2,
+                  labelIds: ["713eee90-d169-40a6-98b8-7c71502b9855"]
+                }
+              }
+            }' \
+            | curl -s -X POST https://api.linear.app/graphql \
+              -H "Content-Type: application/json" \
+              -H "Authorization: $LINEAR_API_KEY" \
+              --data-binary @- \
+            | jq -r '.data.issueCreate.issue.identifier // "failed"'
