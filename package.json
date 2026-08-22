@@ -1,7 +1,7 @@
 {
 	"name": "@groeponline/pi-zai",
 	"version": "0.5.5",
-	"description": "Z.AI cache visibility, native request diagnostics, and local operator metrics for Pi",
+	"description": "Z.AI/GLM operator visibility for Pi: prompt-cache metrics, native request diagnostics, thinking traces, and local usage telemetry.",
 	"type": "module",
 	"license": "MIT",
 	"author": "GroepOnline",
@@ -9,7 +9,7 @@
 		"type": "git",
 		"url": "git+https://github.com/GroepOnline/pi-zai.git"
 	},
-	"homepage": "https://pi.dev/packages/@groeponline/pi-zai",
+	"homepage": "https://github.com/GroepOnline/pi-zai#readme",
 	"bugs": {
 		"url": "https://github.com/GroepOnline/pi-zai/issues"
 	},
@@ -27,7 +27,12 @@
 		"coding-agent",
 		"cache",
 		"llm",
-		"groeponline"
+		"groeponline",
+		"prompt-cache",
+		"diagnostics",
+		"observability",
+		"operator-tools",
+		"usage-metrics"
 	],
 	"engines": {
 		"node": ">=22.19.0"

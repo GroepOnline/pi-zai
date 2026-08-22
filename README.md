@@ -4,6 +4,7 @@
 
 <p align="center">
   <a href="https://www.npmjs.com/package/@groeponline/pi-zai"><img src="https://img.shields.io/npm/v/@groeponline/pi-zai?style=flat-square&label=npm" alt="npm version" /></a>
+  <a href="https://www.npmjs.com/package/@groeponline/pi-zai"><img src="https://img.shields.io/npm/dm/@groeponline/pi-zai?style=flat-square&label=downloads" alt="npm downloads" /></a>
   <a href="https://github.com/GroepOnline/pi-zai/pkgs/npm/pi-zai"><img src="https://img.shields.io/badge/GitHub%20Packages-pi--zai-24292f?style=flat-square" alt="GitHub Packages" /></a>
   <img src="https://img.shields.io/badge/Pi-%E2%89%A50.80.10-24292f?style=flat-square" alt="Pi 0.80.10 or newer" />
   <img src="https://img.shields.io/badge/Node-%E2%89%A522.19-24292f?style=flat-square" alt="Node 22.19 or newer" />
@@ -12,7 +13,7 @@
 
 # pi-zai
 
-A Pi extension for running Z.AI with visible cache behavior, native thinking diagnostics, and local operator metrics.
+See what Pi is actually doing when it talks to Z.AI. `pi-zai` surfaces prompt-cache behavior, native request diagnostics, thinking signals, and local usage metrics without inserting a proxy or replacing Pi’s provider path.
 
 Pi already owns the agent loop, tools, sessions, streaming, and Z.AI provider. **pi-zai hooks into that existing path.** It does not proxy chat traffic, replace Pi's runtime, or create a second model client.
 
