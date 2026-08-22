@@ -2,8 +2,6 @@
 import fs from "node:fs";
 import path from "node:path";
 import { execFileSync } from "node:child_process";
-import { fileURLToPath } from "node:url";
-
 const DOCS = "https://github.com/earendil-works/pi/blob/main/packages/coding-agent/docs/packages.md";
 const packageRoot = path.resolve(process.argv[2] || process.cwd());
 const packageJsonPath = path.join(packageRoot, "package.json");
@@ -82,18 +80,18 @@ for (const dep of core) {
   if ((pkg.bundledDependencies || pkg.bundleDependencies || []).includes(dep)) fail(`Pi core package ${dep} must not be bundled`);
 }
 
-const skipDirs = new Set([".git", "node_modules", "dist", "target", "coverage", ".next", "build"]);
-const codeExt = new Set([".ts", ".tsx", ".js", ".mjs", ".cjs"]);
+const runtimeRoot = path.join(packageRoot, "dist");
+const codeExt = new Set([".js", ".mjs", ".cjs"]);
 const sourceFiles = [];
-function walk(dir) {
+function walkRuntime(dir) {
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
-    if (entry.isDirectory() && skipDirs.has(entry.name)) continue;
+    
     const full = path.join(dir, entry.name);
-    if (entry.isDirectory()) walk(full);
+    if (entry.isDirectory()) walkRuntime(full);
     else if (codeExt.has(path.extname(entry.name))) sourceFiles.push(full);
   }
 }
-walk(packageRoot);
+walkRuntime(runtimeRoot);
 const sourceText = sourceFiles.map((file) => fs.readFileSync(file, "utf8")).join("\n");
 const escapeRegExp = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 for (const dep of core) {
