@@ -1,6 +1,6 @@
 {
 	"name": "@groeponline/pi-zai",
-	"version": "0.5.4",
+	"version": "0.5.5",
 	"description": "Z.AI cache visibility, native request diagnostics, and local operator metrics for Pi",
 	"type": "module",
 	"license": "MIT",
@@ -14,12 +14,16 @@
 		"registry": "https://registry.npmjs.org"
 	},
 	"keywords": [
+		"pi-package",
 		"pi",
+		"pi-extension",
+		"pi-coding-agent",
 		"z.ai",
 		"glm",
 		"coding-agent",
 		"cache",
-		"llm"
+		"llm",
+		"groeponline"
 	],
 	"engines": {
 		"node": ">=22.19.0"
