@@ -20,7 +20,6 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
       - run: npm install --global npm@11.5.1
       - run: npm ci --ignore-scripts
-      - run: npm ci --ignore-scripts --prefix worker/telemetry
       - run: npm run check:version
       - run: npm run lint
       - run: npm run build
