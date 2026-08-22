@@ -1,0 +1,40 @@
+name: Pi.dev gallery publish hotfix
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
+        with:
+          node-version: '22.x'
+          registry-url: 'https://registry.npmjs.org'
+      - run: npm install --global npm@11.5.1
+      - run: npm ci --ignore-scripts
+      - run: npm ci --ignore-scripts --prefix worker/telemetry
+      - run: npm run check:version
+      - run: npm run lint
+      - run: npm run build
+      - run: npm test
+      - run: npm run check:package
+      - run: npm run check:consumer-install
+      - name: Publish to npmjs.org
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          current=$(npm view @groeponline/pi-zai@0.5.5 version --json 2>/dev/null || true)
+          if [ "$current" = '"0.5.5"' ]; then
+            echo '0.5.5 already published; skipping.'
+            exit 0
+          fi
+          test -n "$NODE_AUTH_TOKEN" || { echo 'NPM_TOKEN is required' >&2; exit 1; }
+          npm publish --access public --provenance
