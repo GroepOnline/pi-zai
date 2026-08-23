@@ -20,7 +20,7 @@ This repository (`GroepOnline/pi-zai`) is the **standalone source of truth** for
 ## Requirements
 
 - Node **>= 22.19.0** (uses the built-in `node:sqlite`).
-- Pi packages **>= 0.80.10** (`@earendil-works/pi-coding-agent` is an optional peer and a devDependency for tests).
+- Pi packages **>= 0.84.2** (`@earendil-works/pi-coding-agent` is an optional peer and a devDependency for tests).
 
 ## Build and test
 
@@ -50,7 +50,7 @@ npm run check --prefix worker/telemetry   # tsc --noEmit
 
 - `secrets` — gitleaks over the working tree plus the `check-secrets.sh` pattern guard.
 - `test` — lint, build, unit tests, `check:package`, `check:consumer-install`, the worker type check, and the filtered `worker-audit.mjs` gate.
-- `pi-minimum` — pins Pi packages to the exact `0.80.10` floor and rebuilds/tests.
+- `pi-minimum` — pins Pi packages to the exact `0.84.2` floor and rebuilds/tests.
 - `pi-latest` — upgrades Pi packages to latest and rebuilds/tests (non-blocking).
 
 ## Local install in Pi
@@ -138,7 +138,7 @@ Breaking changes → minor or major bump; additive changes → minor; fixes and 
 
 ## Pi compatibility matrix
 
-- Development dependencies target Pi **0.80.10**.
-- Optional peer: `@earendil-works/pi-coding-agent >=0.80.10`.
-- CI runs `check:version`, an exact `pi-minimum` lane pinned to `0.80.10`, and a non-blocking `pi-latest` lane.
+- Development dependencies target Pi **0.84.2**.
+- Optional peer: `@earendil-works/pi-coding-agent >=0.84.2`.
+- CI runs `check:version`, an exact `pi-minimum` lane pinned to `0.84.2`, and a non-blocking `pi-latest` lane.
 - Generate/check the runtime version with `npm run check:version` (also runs from `prebuild`).

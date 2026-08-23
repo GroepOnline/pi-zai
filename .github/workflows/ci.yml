@@ -58,7 +58,7 @@ jobs:
       - run: node scripts/worker-audit.mjs
 
   pi-minimum:
-    name: Pi 0.80.10 minimum
+    name: Pi 0.84.2 minimum
     # GitHub-hosted runners banned until Actions spending restored (fleet only).
     runs-on: ${{ github.event_name == 'pull_request' && fromJSON('["self-hosted","Linux","X64","pr-isolated"]') || fromJSON('["self-hosted","Linux","X64","heavy"]') }}
     steps:
@@ -70,12 +70,12 @@ jobs:
           node-version: '22.x'
           cache: npm
       - run: npm ci --ignore-scripts
-      - name: Pin Pi packages to 0.80.10
+      - name: Pin Pi packages to 0.84.2
         run: |
           npm install --ignore-scripts --save-dev \
-            @earendil-works/pi-agent-core@0.80.10 \
-            @earendil-works/pi-ai@0.80.10 \
-            @earendil-works/pi-coding-agent@0.80.10
+            @earendil-works/pi-agent-core@0.84.2 \
+            @earendil-works/pi-ai@0.84.2 \
+            @earendil-works/pi-coding-agent@0.84.2
       - run: npm run build
       - run: npm test
 

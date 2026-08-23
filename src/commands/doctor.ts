@@ -219,7 +219,7 @@ export function registerZaiDoctorCommand(
 				name: "Pi compatibility",
 				status: "pass",
 				detail:
-					"Requires @earendil-works/pi-coding-agent >= 0.80.10 with native Z.AI transport.",
+					"Requires @earendil-works/pi-coding-agent >= 0.84.2 with native Z.AI transport.",
 			});
 
 			checks.push({

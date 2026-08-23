@@ -6,7 +6,7 @@
   <a href="https://www.npmjs.com/package/@groeponline/pi-zai"><img src="https://img.shields.io/npm/v/@groeponline/pi-zai?style=flat-square&label=npm" alt="npm version" /></a>
   <a href="https://www.npmjs.com/package/@groeponline/pi-zai"><img src="https://img.shields.io/npm/dm/@groeponline/pi-zai?style=flat-square&label=downloads" alt="npm downloads" /></a>
   <a href="https://github.com/GroepOnline/pi-zai/pkgs/npm/pi-zai"><img src="https://img.shields.io/badge/GitHub%20Packages-pi--zai-24292f?style=flat-square" alt="GitHub Packages" /></a>
-  <img src="https://img.shields.io/badge/Pi-%E2%89%A50.80.10-24292f?style=flat-square" alt="Pi 0.80.10 or newer" />
+  <img src="https://img.shields.io/badge/Pi-%E2%89%A50.84.2-24292f?style=flat-square" alt="Pi 0.84.2 or newer" />
   <img src="https://img.shields.io/badge/Node-%E2%89%A522.19-24292f?style=flat-square" alt="Node 22.19 or newer" />
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-24292f?style=flat-square" alt="MIT license" /></a>
 </p>
@@ -190,7 +190,7 @@ npm test
 npm run lint
 ```
 
-The extension targets Pi `>= 0.80.10` and Node.js `>= 22.19.0`.
+The extension targets Pi `>= 0.84.2` and Node.js `>= 22.19.0`.
 
 ## License
 
