@@ -222,6 +222,8 @@ for (const [key, values] of resourcesByKey) {
 		fail(`pi.${key} resolves to no packaged files after exclusions`);
 	resourceFiles.set(key, included);
 }
+if (![...resourceFiles.values()].some((files) => files.size > 0))
+	fail("pi manifest must resolve to at least one packaged Pi resource");
 
 const peer = pkg.peerDependencies || {};
 for (const dep of core) {

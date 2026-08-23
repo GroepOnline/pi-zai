@@ -10,6 +10,7 @@ import {
 import { canonicalStableSystemPrefix } from "../cache/context-policy.ts";
 import { fingerprintToolset } from "../cache/fingerprint.ts";
 import { resolveZaiCapabilities } from "../capabilities.ts";
+import { GLM53_THINKING_LEVEL_MAP } from "../model-catalog.ts";
 import {
 	formatProbeSummary,
 	formatRecommendedRetrySettingsJson,
@@ -86,9 +87,9 @@ function glm53NativeMetadataOk(model: ZaiModel | undefined): boolean {
 	const map = model.thinkingLevelMap;
 	return (
 		compat?.supportsReasoningEffort === true &&
-		map.low === "low" &&
-		map.high === "high" &&
-		map.max === "max"
+		Object.entries(GLM53_THINKING_LEVEL_MAP).every(
+			([level, expected]) => map[level as keyof typeof map] === expected,
+		)
 	);
 }
 
