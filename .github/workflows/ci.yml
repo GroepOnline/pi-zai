@@ -105,7 +105,7 @@ jobs:
   notify-linear-on-failure:
     name: Notify Linear on CI failure
     if: failure() && github.event_name != 'merge_group'
-    needs: [push, pull_request, group, cancel-in-progress, contents, secrets, test, pi-minimum, pi-latest]
+    needs: [secrets, test, pi-minimum, pi-latest]
     # GitHub-hosted runners banned until Actions spending restored (fleet only).
     runs-on: ${{ github.event_name == 'pull_request' && fromJSON('["self-hosted","Linux","X64","pr-isolated"]') || fromJSON('["self-hosted","Linux","X64","heavy"]') }}
     timeout-minutes: 3
