@@ -150,7 +150,7 @@ jobs:
             | jq -er '
                 if ((.errors // []) | length) > 0 then
                   error("Linear GraphQL mutation failed")
-                elif (.data.issueCreate.success // true) == false then
+                elif (.data.issueCreate.success == false) then
                   error("Linear issueCreate reported success=false")
                 elif .data.issueCreate.issue.identifier then
                   .data.issueCreate.issue.identifier
