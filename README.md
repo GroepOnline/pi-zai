@@ -74,15 +74,17 @@ Credentials stay in Pi's normal credential flow: `/login`, `auth.json`, `models.
 
 pi-zai uses Pi's own thinking selector. There is no second `/zai-thinking` state to keep in sync.
 
-For the current Pi GLM-5.2 catalog:
+**GLM-5.3 is the current Coding Plan flagship.** Z.AI no longer allows thinking to be disabled for 5.3 and accepts only `low`, `high`, or `max` reasoning effort. pi-zai therefore applies a narrow request-boundary compatibility rule when the installed Pi release still emits older metadata:
 
 ```text
-Pi off                 → thinking disabled
-Pi low / medium / high → reasoning_effort high
-Pi max                 → reasoning_effort max
+Pi off / minimal / low → thinking enabled, reasoning_effort low
+Pi medium / high       → thinking enabled, reasoning_effort high
+Pi xhigh / max         → thinking enabled, reasoning_effort max
 ```
 
-Current Pi releases send `clear_thinking=false` while Z.AI thinking is enabled. pi-zai now leaves that native payload unchanged by default. An explicit `preserveThinking: false` setting can force `clear_thinking=true`, but this may reduce reasoning continuity and cache reuse in long coding/tool sessions.
+If a future Pi release already emits a valid GLM-5.3 payload, pi-zai leaves it untouched. The current released Pi catalog also exposes `glm-5.2-highspeed`; classic GLM-5.2 keeps its own `high`/`max` mapping.
+
+Current Pi releases send `clear_thinking=false` while Z.AI thinking is enabled. pi-zai leaves that preserved-thinking behavior unchanged by default. An explicit `preserveThinking: false` setting can force `clear_thinking=true`, but this may reduce reasoning continuity and cache reuse in long coding/tool sessions.
 
 [Thinking details →](docs/thinking.md)
 

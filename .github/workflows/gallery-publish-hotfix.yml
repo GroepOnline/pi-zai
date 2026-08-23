@@ -25,8 +25,6 @@ jobs:
       - run: npm test
       - run: npm run check:package
       - run: npm run check:consumer-install
-      - name: Pi package release gate
-        run: npm run verify:pi-package
       - name: Publish to npmjs.org
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

@@ -85,4 +85,69 @@ describe("normalizeZaiThinkingPayload", () => {
 			),
 		).toBeUndefined();
 	});
+	it("migrates GLM-5.3 thinking=disabled to enabled low effort", () => {
+		const result = normalizeZaiThinkingPayload(
+			{ thinking: { type: "disabled" } },
+			native,
+			"glm-5.3",
+			"off",
+		);
+		expect(result).toMatchObject({
+			thinking: { type: "enabled", clear_thinking: false },
+			reasoning_effort: "low",
+		});
+	});
+
+	it("fills missing GLM-5.3 reasoning_effort from the Pi level", () => {
+		const result = normalizeZaiThinkingPayload(
+			{ thinking: { type: "enabled", clear_thinking: false } },
+			native,
+			"glm-5.3",
+			"high",
+		);
+		expect(result?.reasoning_effort).toBe("high");
+		expect(result?.thinking).toEqual({
+			type: "enabled",
+			clear_thinking: false,
+		});
+	});
+
+	it("maps GLM-5.3 xhigh/max family to max effort", () => {
+		for (const level of ["xhigh", "max"] as const) {
+			const result = normalizeZaiThinkingPayload(
+				{ thinking: { type: "enabled", clear_thinking: false } },
+				native,
+				"glm-5.3",
+				level,
+			);
+			expect(result?.reasoning_effort).toBe("max");
+		}
+	});
+
+	it("does not rewrite an already-valid future Pi GLM-5.3 payload", () => {
+		expect(
+			normalizeZaiThinkingPayload(
+				{
+					thinking: { type: "enabled", clear_thinking: false },
+					reasoning_effort: "max",
+				},
+				native,
+				"glm-5.3",
+				"max",
+			),
+		).toBeUndefined();
+	});
+
+	it("preserves explicit clear-thinking policy on GLM-5.3", () => {
+		const result = normalizeZaiThinkingPayload(
+			{ thinking: { type: "disabled" } },
+			forceClear,
+			"glm-5.3",
+			"low",
+		);
+		expect(result).toMatchObject({
+			thinking: { type: "enabled", clear_thinking: true },
+			reasoning_effort: "low",
+		});
+	});
 });

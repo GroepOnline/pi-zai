@@ -8,6 +8,8 @@ export const PLATFORM_BASE_URL = "https://api.z.ai/api/paas/v4";
  * transparent proxy and must never be presented as a verified GLM-5.2 bill.
  */
 export const GLM52_PRICING_BASIS = "glm-5.1-rate-proxy" as const;
+/** GLM-5.3 has no verified public per-token price in this catalog yet. */
+export const GLM53_PRICING_BASIS = "unverified" as const;
 
 /** Keep this aligned with Pi's native GLM-5.2 catalog. */
 export const GLM52_THINKING_LEVEL_MAP = {
@@ -15,6 +17,17 @@ export const GLM52_THINKING_LEVEL_MAP = {
 	low: "high",
 	medium: "high",
 	high: "high",
+	max: "max",
+} as const;
+
+/** GLM-5.3 only accepts low/high/max and cannot disable thinking. */
+export const GLM53_THINKING_LEVEL_MAP = {
+	off: "low",
+	minimal: "low",
+	low: "low",
+	medium: "high",
+	high: "high",
+	xhigh: "max",
 	max: "max",
 } as const;
 
@@ -36,6 +49,22 @@ export function buildPlatformModelCatalog(
 	_options: PlatformModelCatalogOptions = {},
 ): ProviderModelConfig[] {
 	return [
+		{
+			id: "glm-5.3",
+			name: "GLM-5.3",
+			reasoning: true,
+			thinkingLevelMap: GLM53_THINKING_LEVEL_MAP,
+			input: ["text"],
+			// Keep cost at zero until Z.AI publishes a verified Platform rate.
+			cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 },
+			contextWindow: 1_000_000,
+			maxTokens: 131_072,
+			compat: {
+				...BASE_ZAI_COMPAT,
+				supportsReasoningEffort: true,
+				zaiToolStream: true,
+			},
+		},
 		{
 			id: "glm-5.2",
 			name: "GLM-5.2",

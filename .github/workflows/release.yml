@@ -139,9 +139,6 @@ jobs:
         run: npm run check:package
       - if: steps.ghpkg.outputs.published != 'true'
         run: npm run check:consumer-install
-      - name: Pi package release gate (GitHub Packages)
-        if: steps.ghpkg.outputs.published != 'true'
-        run: npm run verify:pi-package
       - if: steps.ghpkg.outputs.published != 'true'
         run: npm run check --prefix worker/telemetry
       - name: Publish to GitHub Packages

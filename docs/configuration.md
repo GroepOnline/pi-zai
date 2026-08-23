@@ -95,7 +95,7 @@ Consent is stored separately at `~/.pi/agent/state/pi-zai/telemetry.consent.json
 
 Credentials resolve through Pi's `ModelRegistry`: `auth.json`, `models.json`, runtime `--api-key`, then env vars. pi-zai **does not** register or override Pi's built-in `zai` / `zai-coding-cn` providers.
 
-Both Coding Plan endpoints are first-class for diagnostics, cache segmentation, adaptive tools, and `/zai-capabilities`. Selecting `zai-coding-cn/glm-5.2` routes probes and usage monitors to `https://open.bigmodel.cn`.
+Both Coding Plan endpoints are first-class for diagnostics, cache segmentation, adaptive tools, and `/zai-capabilities`. Current released Pi exposes `glm-5.3` and `glm-5.2-highspeed` on both global and China Coding Plan catalogs. Selecting `zai-coding-cn/glm-5.3` routes probes and usage monitors to `https://open.bigmodel.cn`.
 
 ## Platform API (optional)
 
@@ -103,6 +103,7 @@ pi-zai does **not** auto-register `zai-platform`. Add it manually in `models.jso
 
 | Model | Context | Notes |
 |-------|---------|-------|
+| `glm-5.3` | 1M | Thinking mandatory; `low`/`high`/`max`; local pricing stays zero until a verified public Platform rate is available |
 | `glm-5.2` | 1M | Pi `low`/`medium`/`high` → Z.AI `high`; Pi `max` → Z.AI `max` |
 | `glm-5.1` | 200K | Tool streaming |
 | `glm-5` | 200K | |

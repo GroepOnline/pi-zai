@@ -10,6 +10,7 @@ import {
 import { endpointLabel } from "../cache/metrics.ts";
 import type { ZaiConfig } from "../config.ts";
 import { formatPiCredentialSource } from "../credentials.ts";
+import { glm53ReasoningEffort } from "../payload-normalizer.ts";
 import type { ZaiModel } from "../zai-model.ts";
 
 export type SessionUsageTotals = {
@@ -56,7 +57,7 @@ export function describeClearThinking(
 	if (!model?.reasoning) {
 		return "n/a (model has no reasoning)";
 	}
-	if (thinkingLevel === "off") {
+	if (thinkingLevel === "off" && model.id !== "glm-5.3") {
 		return "not sent (thinking disabled)";
 	}
 	if (config.preserveThinking === true) {
@@ -85,6 +86,11 @@ export function describeThinkingPayload(
 ): string {
 	if (!model?.reasoning) {
 		return "thinking disabled (non-reasoning model)";
+	}
+	if (model.id === "glm-5.3") {
+		const clearThinking = config.preserveThinking === false ? "true" : "false";
+		const effort = glm53ReasoningEffort(thinkingLevel);
+		return `type="enabled", reasoning_effort="${effort}", clear_thinking=${clearThinking} (GLM-5.3 compatibility)`;
 	}
 	if (thinkingLevel === "off") {
 		return 'type="disabled"';
@@ -159,7 +165,11 @@ export function isSubscriptionManaged(model: ZaiModel | undefined): boolean {
 }
 
 export function isEstimatedCost(model: ZaiModel | undefined): boolean {
-	return model !== undefined && isPlatformProvider(model.provider);
+	return (
+		model !== undefined &&
+		isPlatformProvider(model.provider) &&
+		(model.cost.input > 0 || model.cost.output > 0)
+	);
 }
 
 export function formatUsageLine(usage: Usage): string {

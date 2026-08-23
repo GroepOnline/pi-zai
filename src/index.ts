@@ -64,10 +64,15 @@ export { formatPiCredentialSource } from "./credentials.ts";
 export {
 	buildPlatformModelCatalog,
 	GLM52_THINKING_LEVEL_MAP,
+	GLM53_PRICING_BASIS,
+	GLM53_THINKING_LEVEL_MAP,
 	PLATFORM_BASE_URL,
 } from "./model-catalog.ts";
 export { isNativeZaiModel } from "./native-zai.ts";
-export { normalizeZaiThinkingPayload } from "./payload-normalizer.ts";
+export {
+	glm53ReasoningEffort,
+	normalizeZaiThinkingPayload,
+} from "./payload-normalizer.ts";
 export {
 	createZaiSessionState,
 	dispatchZaiHook,
@@ -519,7 +524,12 @@ export default function piZaiExtension(pi: ExtensionAPI): void {
 		) {
 			return;
 		}
-		return normalizeZaiThinkingPayload(event.payload, config);
+		return normalizeZaiThinkingPayload(
+			event.payload,
+			config,
+			ctx.model.id,
+			pi.getThinkingLevel(),
+		);
 	});
 
 	pi.on("after_provider_response", async (event, ctx) => {

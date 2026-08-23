@@ -15,6 +15,14 @@ import { fileURLToPath } from "node:url";
 const packageRoot = dirname(dirname(fileURLToPath(import.meta.url)));
 const npmCommand = process.platform === "win32" ? "npm.cmd" : "npm";
 const tempRoot = mkdtempSync(join(tmpdir(), "pi-zai-consumer-install-"));
+const cleanNpmUserConfig = join(tempRoot, "empty-npmrc");
+writeFileSync(cleanNpmUserConfig, "", "utf8");
+const cleanNpmEnv = {
+	...process.env,
+	NPM_CONFIG_USERCONFIG: cleanNpmUserConfig,
+};
+delete cleanNpmEnv.npm_config_allow_scripts;
+delete cleanNpmEnv.NPM_CONFIG_ALLOW_SCRIPTS;
 const packDirectory = join(tempRoot, "pack");
 const consumerDirectory = join(tempRoot, "consumer");
 const extensionPackage = "@groeponline/pi-zai";
@@ -36,6 +44,7 @@ function runNpm(args, cwd) {
 	return execFileSync(npmCommand, args, {
 		cwd,
 		encoding: "utf8",
+		env: cleanNpmEnv,
 		stdio: ["ignore", "pipe", "pipe"],
 	});
 }
