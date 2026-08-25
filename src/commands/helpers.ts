@@ -96,9 +96,18 @@ export function describeThinkingPayload(
 		return 'type="disabled"';
 	}
 	const clearThinking = config.preserveThinking === false ? "true" : "false";
-	const mapped = model.thinkingLevelMap?.[thinkingLevel];
-	const effort = typeof mapped === "string" ? mapped : thinkingLevel;
-	return `type="enabled", reasoning_effort="${effort}", clear_thinking=${clearThinking}`;
+	const levelMap = model.thinkingLevelMap;
+	if (levelMap) {
+		const mapped = levelMap[thinkingLevel];
+		if (mapped === null) {
+			return `not selectable (${thinkingLevel} disables thinking for ${model.id})`;
+		}
+		if (mapped === undefined) {
+			return `not selectable (${model.id} has no mapping for ${thinkingLevel})`;
+		}
+		return `type="enabled", reasoning_effort="${mapped}", clear_thinking=${clearThinking}`;
+	}
+	return `type="enabled", reasoning_effort="${thinkingLevel}", clear_thinking=${clearThinking}`;
 }
 
 export function getLastAssistantUsage(
