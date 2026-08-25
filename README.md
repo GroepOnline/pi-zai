@@ -4,15 +4,16 @@
 
 <p align="center">
   <a href="https://www.npmjs.com/package/@groeponline/pi-zai"><img src="https://img.shields.io/npm/v/@groeponline/pi-zai?style=flat-square&label=npm" alt="npm version" /></a>
+  <a href="https://www.npmjs.com/package/@groeponline/pi-zai"><img src="https://img.shields.io/npm/dm/@groeponline/pi-zai?style=flat-square&label=downloads" alt="npm downloads" /></a>
   <a href="https://github.com/GroepOnline/pi-zai/pkgs/npm/pi-zai"><img src="https://img.shields.io/badge/GitHub%20Packages-pi--zai-24292f?style=flat-square" alt="GitHub Packages" /></a>
-  <img src="https://img.shields.io/badge/Pi-%E2%89%A50.80.10-24292f?style=flat-square" alt="Pi 0.80.10 or newer" />
+  <img src="https://img.shields.io/badge/Pi-%E2%89%A50.84.2-24292f?style=flat-square" alt="Pi 0.84.2 or newer" />
   <img src="https://img.shields.io/badge/Node-%E2%89%A522.19-24292f?style=flat-square" alt="Node 22.19 or newer" />
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-24292f?style=flat-square" alt="MIT license" /></a>
 </p>
 
 # pi-zai
 
-A Pi extension for running Z.AI with visible cache behavior, native thinking diagnostics, and local operator metrics.
+See what Pi is actually doing when it talks to Z.AI. `pi-zai` surfaces prompt-cache behavior, native request diagnostics, thinking signals, and local usage metrics without inserting a proxy or replacing Pi’s provider path.
 
 Pi already owns the agent loop, tools, sessions, streaming, and Z.AI provider. **pi-zai hooks into that existing path.** It does not proxy chat traffic, replace Pi's runtime, or create a second model client.
 
@@ -73,15 +74,17 @@ Credentials stay in Pi's normal credential flow: `/login`, `auth.json`, `models.
 
 pi-zai uses Pi's own thinking selector. There is no second `/zai-thinking` state to keep in sync.
 
-For the current Pi GLM-5.2 catalog:
+**GLM-5.3 is the current Coding Plan flagship.** Z.AI no longer allows thinking to be disabled for 5.3 and accepts only `low`, `high`, or `max` reasoning effort. pi-zai therefore applies a narrow request-boundary compatibility rule when the installed Pi release still emits older metadata:
 
 ```text
-Pi off                 → thinking disabled
-Pi low / medium / high → reasoning_effort high
-Pi max                 → reasoning_effort max
+Pi off / minimal / low → thinking enabled, reasoning_effort low
+Pi medium / high       → thinking enabled, reasoning_effort high
+Pi xhigh / max         → thinking enabled, reasoning_effort max
 ```
 
-Current Pi releases send `clear_thinking=false` while Z.AI thinking is enabled. pi-zai now leaves that native payload unchanged by default. An explicit `preserveThinking: false` setting can force `clear_thinking=true`, but this may reduce reasoning continuity and cache reuse in long coding/tool sessions.
+If a future Pi release already emits a valid GLM-5.3 payload, pi-zai leaves it untouched. The current released Pi catalog also exposes `glm-5.2-highspeed`; classic GLM-5.2 keeps its own `high`/`max` mapping.
+
+Current Pi releases send `clear_thinking=false` while Z.AI thinking is enabled. pi-zai leaves that preserved-thinking behavior unchanged by default. An explicit `preserveThinking: false` setting can force `clear_thinking=true`, but this may reduce reasoning continuity and cache reuse in long coding/tool sessions.
 
 [Thinking details →](docs/thinking.md)
 
@@ -187,7 +190,7 @@ npm test
 npm run lint
 ```
 
-The extension targets Pi `>= 0.80.10` and Node.js `>= 22.19.0`.
+The extension targets Pi `>= 0.84.2` and Node.js `>= 22.19.0`.
 
 ## License
 

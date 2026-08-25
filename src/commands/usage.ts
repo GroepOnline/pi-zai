@@ -87,22 +87,24 @@ export function registerZaiUsageCommand(
 			const platformModel = buildPlatformModelCatalog().find(
 				(candidate) => candidate.id === model.id,
 			);
-			const equivalent = platformModel
-				? computeUsageCostBreakdown(
-						{
-							input: sessionTotals.input,
-							cacheRead: sessionTotals.cacheRead,
-							cacheWrite: sessionTotals.cacheWrite,
-							output: sessionTotals.output,
-						},
-						{
-							input: platformModel.cost.input,
-							cacheRead: platformModel.cost.cacheRead,
-							cacheWrite: platformModel.cost.cacheWrite,
-							output: platformModel.cost.output,
-						},
-					)
-				: undefined;
+			const equivalent =
+				platformModel &&
+				(platformModel.cost.input > 0 || platformModel.cost.output > 0)
+					? computeUsageCostBreakdown(
+							{
+								input: sessionTotals.input,
+								cacheRead: sessionTotals.cacheRead,
+								cacheWrite: sessionTotals.cacheWrite,
+								output: sessionTotals.output,
+							},
+							{
+								input: platformModel.cost.input,
+								cacheRead: platformModel.cost.cacheRead,
+								cacheWrite: platformModel.cost.cacheWrite,
+								output: platformModel.cost.output,
+							},
+						)
+					: undefined;
 
 			const lines = [
 				"Z.AI usage",
@@ -124,6 +126,13 @@ export function registerZaiUsageCommand(
 				`  Extension rolling hit ratio: ${formatPercent(rollingHitRatio)}`,
 				`  ${costInterpretation}`,
 			];
+
+			if (subscriptionManaged) {
+				lines.push(
+					"  Coding Plan accounting: points-based; input, cached input, and output are charged separately by Z.AI.",
+					"  Off-peak model calls use 50% of standard points outside Z.AI peak hours; Pi token totals remain diagnostics, not a local points bill.",
+				);
+			}
 
 			if (equivalent) {
 				lines.push(

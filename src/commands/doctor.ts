@@ -10,6 +10,7 @@ import {
 import { canonicalStableSystemPrefix } from "../cache/context-policy.ts";
 import { fingerprintToolset } from "../cache/fingerprint.ts";
 import { resolveZaiCapabilities } from "../capabilities.ts";
+import { GLM53_THINKING_LEVEL_MAP } from "../model-catalog.ts";
 import {
 	formatProbeSummary,
 	formatRecommendedRetrySettingsJson,
@@ -37,9 +38,11 @@ type DoctorCheck = {
 
 const DOCTOR_THINKING_LEVELS: ThinkingLevel[] = [
 	"off",
+	"minimal",
 	"low",
 	"medium",
 	"high",
+	"xhigh",
 	"max",
 ];
 
@@ -56,7 +59,7 @@ function statusIcon(status: CheckStatus): string {
 	}
 }
 
-/** GLM-5.2 is the only Z.AI model exposing reasoning_effort, so it is the only one with a thinkingLevelMap. */
+/** Detect whether the installed Pi catalog exposes native reasoning_effort metadata. */
 function isReasoningEffortModel(model: ZaiModel | undefined): boolean {
 	return (
 		(model?.compat as { supportsReasoningEffort?: boolean } | undefined)
@@ -73,6 +76,20 @@ function glm52ThinkingMapOk(model: ZaiModel | undefined): boolean {
 		map.medium === "high" &&
 		map.high === "high" &&
 		map.max === "max"
+	);
+}
+
+function glm53NativeMetadataOk(model: ZaiModel | undefined): boolean {
+	if (model?.id !== "glm-5.3" || !model.thinkingLevelMap) return false;
+	const compat = model.compat as
+		| { supportsReasoningEffort?: boolean }
+		| undefined;
+	const map = model.thinkingLevelMap;
+	return (
+		compat?.supportsReasoningEffort === true &&
+		Object.entries(GLM53_THINKING_LEVEL_MAP).every(
+			([level, expected]) => map[level as keyof typeof map] === expected,
+		)
 	);
 }
 
@@ -178,8 +195,16 @@ export function registerZaiDoctorCommand(
 		handler: async (_args, ctx) => {
 			const checks: DoctorCheck[] = [];
 			const config = deps.getConfig(ctx.cwd);
-			const codingModel = ctx.modelRegistry.find("zai", "glm-5.2");
-			const platformModel = ctx.modelRegistry.find("zai-platform", "glm-5.2");
+			const nativeGlm53 = ctx.modelRegistry.find("zai", "glm-5.3");
+			const nativeGlm52Highspeed = ctx.modelRegistry.find(
+				"zai",
+				"glm-5.2-highspeed",
+			);
+			const codingModel =
+				nativeGlm53 ?? ctx.modelRegistry.find("zai", "glm-5.2");
+			const platformModel =
+				ctx.modelRegistry.find("zai-platform", "glm-5.3") ??
+				ctx.modelRegistry.find("zai-platform", "glm-5.2");
 			const platformRegistered =
 				deps.isPlatformProviderRegistered(ctx) && platformModel !== undefined;
 			const active = ctx.model;
@@ -194,22 +219,38 @@ export function registerZaiDoctorCommand(
 				name: "Pi compatibility",
 				status: "pass",
 				detail:
-					"Requires @earendil-works/pi-coding-agent >= 0.80.10 with native Z.AI transport.",
+					"Requires @earendil-works/pi-coding-agent >= 0.84.2 with native Z.AI transport.",
 			});
 
 			checks.push({
-				name: "Built-in Z.AI provider",
-				status: codingModel ? "pass" : "fail",
-				detail: codingModel
-					? "zai/glm-5.2 present"
-					: "zai/glm-5.2 missing from registry",
+				name: "Built-in Z.AI flagship",
+				status: nativeGlm53 ? "pass" : "fail",
+				detail: nativeGlm53
+					? "zai/glm-5.3 present"
+					: "zai/glm-5.3 missing; upgrade Pi before relying on current Coding Plan defaults",
+			});
+
+			checks.push({
+				name: "GLM-5.2 Highspeed catalog",
+				status: nativeGlm52Highspeed ? "pass" : "warn",
+				detail: nativeGlm52Highspeed
+					? "zai/glm-5.2-highspeed present"
+					: "glm-5.2-highspeed missing from installed Pi catalog",
+			});
+
+			checks.push({
+				name: "GLM-5.3 native effort metadata",
+				status: glm53NativeMetadataOk(nativeGlm53) ? "pass" : "warn",
+				detail: glm53NativeMetadataOk(nativeGlm53)
+					? "Pi natively exposes GLM-5.3 low/high/max effort metadata; pi-zai compatibility normalization is a no-op"
+					: "Installed Pi catalog is missing current GLM-5.3 effort metadata; pi-zai request-boundary compatibility normalization is active",
 			});
 
 			checks.push({
 				name: "Platform provider (optional)",
 				status: platformRegistered ? "pass" : "skip",
 				detail: platformRegistered
-					? "zai-platform/glm-5.2 present in models.json"
+					? `zai-platform/${platformModel?.id ?? "model"} present in models.json`
 					: "Not registered by pi-zai; add zai-platform manually via models.json if needed",
 			});
 
@@ -228,7 +269,14 @@ export function registerZaiDoctorCommand(
 			});
 
 			const thinkingModel = active ?? codingModel;
-			if (isReasoningEffortModel(thinkingModel)) {
+			if (thinkingModel?.id === "glm-5.3") {
+				checks.push({
+					name: "GLM-5.3 thinking contract",
+					status: "pass",
+					detail:
+						"thinking is mandatory; pi-zai maps off/minimal/low → low, medium/high → high, xhigh/max → max and never emits thinking.type=disabled",
+				});
+			} else if (isReasoningEffortModel(thinkingModel)) {
 				checks.push({
 					name: "GLM-5.2 thinkingLevelMap",
 					status: glm52ThinkingMapOk(thinkingModel) ? "pass" : "warn",
@@ -238,9 +286,9 @@ export function registerZaiDoctorCommand(
 				});
 			} else {
 				checks.push({
-					name: "GLM-5.2 thinkingLevelMap",
+					name: "Reasoning effort metadata",
 					status: "skip",
-					detail: `${thinkingModel?.id ?? "model"} has no reasoning_effort control; thinkingLevelMap not applicable`,
+					detail: `${thinkingModel?.id ?? "model"} has no native reasoning_effort metadata`,
 				});
 			}
 
@@ -326,8 +374,8 @@ export function registerZaiDoctorCommand(
 				detail: !platformRegistered
 					? "Platform provider is not registered; pricing metadata check is not applicable"
 					: hasPlatformPricing(platformModel)
-						? "Platform glm-5.2 has non-zero local pricing metadata; verify it against current public rates before billing use"
-						: "Platform glm-5.2 pricing metadata missing or zero",
+						? `Platform ${platformModel?.id ?? "model"} has non-zero local pricing metadata; verify it against current public rates before billing use`
+						: `Platform ${platformModel?.id ?? "model"} pricing metadata is unverified or zero; dollar estimates stay disabled`,
 			});
 
 			const stableSample = canonicalStableSystemPrefix(

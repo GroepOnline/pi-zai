@@ -2,6 +2,20 @@
 
 Thinking is controlled by **Pi's native model selector and request builder**. pi-zai does not register a second thinking command or maintain a separate thinking level.
 
+## GLM-5.3 levels
+
+GLM-5.3 changes the wire contract: thinking is mandatory and `reasoning_effort` is limited to `low`, `high`, or `max`. Z.AI recommends `max` for coding. pi-zai maps Pi's broader selector without creating a second state:
+
+| Pi level | GLM-5.3 request |
+|----------|-----------------|
+| `off` / `minimal` / `low` | `thinking: { type: "enabled" }`, `reasoning_effort: "low"` |
+| `medium` / `high` | `thinking: { type: "enabled" }`, `reasoning_effort: "high"` |
+| `xhigh` / `max` | `thinking: { type: "enabled" }`, `reasoning_effort: "max"` |
+
+The `off → low` migration is intentional: sending `thinking: { type: "disabled" }` to GLM-5.3 is invalid. Released Pi versions may know the `glm-5.3` model before their compatibility metadata fully reflects this contract, so pi-zai fixes only an invalid or incomplete 5.3 request at `before_provider_request`. When Pi emits `thinking: enabled` plus a valid effort itself, the compatibility layer is a no-op.
+
+The released Coding Plan catalog also includes `glm-5.2-highspeed`.
+
 ## GLM-5.2 levels
 
 The current Pi GLM-5.2 catalog maps its selectable levels to the two Z.AI reasoning efforts:
@@ -57,7 +71,7 @@ Example only when an override is required:
 
 Forcing `false` clears earlier reasoning on each request. This can reduce payload history, but it can also reduce reasoning continuity and cache reuse in long coding/tool sessions. It is no longer the extension default.
 
-When thinking is disabled, pi-zai leaves Pi's native `thinking: { type: "disabled" }` payload untouched and does not add a redundant `clear_thinking` field.
+For models that still support disabled thinking, pi-zai leaves Pi's native `thinking: { type: "disabled" }` payload untouched. GLM-5.3 is the deliberate exception because Z.AI rejects disabled thinking for that model.
 
 ## Interleaved tool use
 

@@ -66,7 +66,8 @@ jobs:
         run: npm run build
       - if: steps.registry.outputs.published != 'true'
         run: npm test
-      - if: steps.registry.outputs.published != 'true'
+      - name: Pi package release gate
+        if: steps.registry.outputs.published != 'true'
         run: npm run check:package
       - if: steps.registry.outputs.published != 'true'
         run: npm run check:consumer-install

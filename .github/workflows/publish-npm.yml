@@ -56,6 +56,9 @@ jobs:
         run: npm test
       - if: steps.registry.outputs.published != 'true'
         run: npm run check:consumer-install
+      - name: Pi package release gate
+        if: steps.registry.outputs.published != 'true'
+        run: npm run verify:pi-package
       - if: steps.registry.outputs.published != 'true'
         run: node scripts/worker-audit.mjs
       - name: Publish to npmjs.org
@@ -99,6 +102,9 @@ jobs:
         run: npm test
       - if: steps.ghpkg.outputs.published != 'true'
         run: npm run check:consumer-install
+      - name: Pi package release gate (GitHub Packages)
+        if: steps.ghpkg.outputs.published != 'true'
+        run: npm run verify:pi-package
       - if: steps.ghpkg.outputs.published != 'true'
         run: node scripts/worker-audit.mjs
       - name: Publish to GitHub Packages

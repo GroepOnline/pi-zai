@@ -89,7 +89,7 @@ Older pi-zai documentation referred to `xhigh`; that no longer reflects the curr
 
 ## Extension not loading
 
-- Pi version must be at least `0.80.10` for this release.
+- Pi version must be at least `0.84.2` for this release.
 - Run `/reload` after installing or updating.
 - Inspect Pi's extension startup errors.
 - Confirm that the installed npm version contains the desired fix; a GitHub merge alone does not update an existing npm installation.
@@ -116,7 +116,7 @@ China Coding Plan (`zai-coding-cn`) is fully supported: credentials via `ZAI_COD
 pi --version
 ```
 
-Upgrade Pi before installing the extension when the version is below `0.80.10`.
+Upgrade Pi before installing the extension when the version is below `0.84.2`.
 
 ## Adaptive tools leave required tools inactive
 
