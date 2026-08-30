@@ -17,6 +17,10 @@ See what Pi is actually doing when it talks to Z.AI. `pi-zai` surfaces prompt-ca
 
 Pi already owns the agent loop, tools, sessions, streaming, and Z.AI provider. **pi-zai hooks into that existing path.** It does not proxy chat traffic, replace Pi's runtime, or create a second model client.
 
+## Where it fits
+
+`pi-zai` is a provider-specific observability layer. It does not own task state, orchestration, or the operator cockpit; it stays deliberately narrow around Pi's native Z.AI path. For general workflow layers use [`pi-wishcraft`](https://github.com/GroepOnline/pi-wishcraft), [`pi-missions`](https://github.com/GroepOnline/pi-missions), or [`pi-agent-orchestrator`](https://github.com/GroepOnline/pi-agent-orchestrator).
+
 ## Install
 
 ```bash
