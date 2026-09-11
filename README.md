@@ -1,46 +1,54 @@
 <p align="center">
-  <img src="docs/images/pi-zai-hero.svg" alt="pi-zai: native Z.AI controls, cache visibility, and local diagnostics for Pi" width="100%" />
+  <img src="https://raw.githubusercontent.com/GroepOnline/pi-zai/main/docs/images/pi-zai-hero.svg" alt="pi-zai: native Z.AI controls, cache visibility, and local diagnostics for Pi" width="100%" />
 </p>
+
+<h1 align="center">Pi Z.AI</h1>
+
+<p align="center"><strong>See what Pi is actually doing when it talks to Z.AI.</strong><br>Inspect prompt-cache behavior, request settings, thinking signals, latency and local usage without adding a proxy or replacing Pi's provider path.</p>
 
 <p align="center">
   <a href="https://www.npmjs.com/package/@groeponline/pi-zai"><img src="https://img.shields.io/npm/v/@groeponline/pi-zai?style=flat-square&label=npm" alt="npm version" /></a>
   <a href="https://www.npmjs.com/package/@groeponline/pi-zai"><img src="https://img.shields.io/npm/dm/@groeponline/pi-zai?style=flat-square&label=downloads" alt="npm downloads" /></a>
-  <a href="https://github.com/GroepOnline/pi-zai/pkgs/npm/pi-zai"><img src="https://img.shields.io/badge/GitHub%20Packages-pi--zai-24292f?style=flat-square" alt="GitHub Packages" /></a>
   <img src="https://img.shields.io/badge/Pi-%E2%89%A50.84.2-24292f?style=flat-square" alt="Pi 0.84.2 or newer" />
   <img src="https://img.shields.io/badge/Node-%E2%89%A522.19-24292f?style=flat-square" alt="Node 22.19 or newer" />
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-24292f?style=flat-square" alt="MIT license" /></a>
 </p>
 
-# pi-zai
-
-See what Pi is actually doing when it talks to Z.AI. `pi-zai` surfaces prompt-cache behavior, native request diagnostics, thinking signals, and local usage metrics without inserting a proxy or replacing Pi’s provider path.
-
-Pi already owns the agent loop, tools, sessions, streaming, and Z.AI provider. **pi-zai hooks into that existing path.** It does not proxy chat traffic, replace Pi's runtime, or create a second model client.
-
-## Where it fits
-
-`pi-zai` is a provider-specific observability layer. It does not own task state, orchestration, or the operator cockpit; it stays deliberately narrow around Pi's native Z.AI path. For general workflow layers use [`pi-wishcraft`](https://github.com/GroepOnline/pi-wishcraft), [`pi-missions`](https://github.com/GroepOnline/pi-missions), or [`pi-agent-orchestrator`](https://github.com/GroepOnline/pi-agent-orchestrator).
-
-## Install
+## Start in 10 seconds
 
 ```bash
 pi install npm:@groeponline/pi-zai
 ```
 
-Catalog: [pi.dev package page](https://pi.dev/packages/@groeponline/pi-zai).
-
-Also published to [GitHub Packages](https://github.com/GroepOnline/pi-zai/pkgs/npm/pi-zai) (see [Getting started](docs/getting-started.md) for the authenticated `@groeponline` registry setup).
-
-Reload Pi, select a Z.AI model, and open the status view:
+Reload Pi, select a Z.AI model and open the status view:
 
 ```text
 /reload
 /zai
 ```
 
-Credentials stay in Pi's normal credential flow: `/login`, `auth.json`, `models.json`, or `ZAI_API_KEY`.
+You immediately get the active endpoint, model, thinking payload, cache state, throughput, tool count and Z.AI-scoped session usage.
 
-[Getting started →](docs/getting-started.md)
+Then inspect the two surfaces that usually explain most performance surprises:
+
+```text
+/zai-cache
+/zai-doctor
+```
+
+Credentials stay in Pi's normal flow: `/login`, `auth.json`, `models.json`, or `ZAI_API_KEY`.
+
+## Why Pi Z.AI
+
+Pi already owns the agent loop, tools, sessions, streaming and Z.AI provider. **pi-zai hooks into that existing path.** It does not proxy chat traffic, replace Pi's runtime or create a second model client.
+
+That distinction matters when you are debugging cache hit rate, reasoning settings or provider latency: the extension shows the path Pi is really using instead of measuring a parallel client that behaves differently.
+
+## Where it fits
+
+`pi-zai` is a provider-specific observability layer. It deliberately does not own task state, orchestration or the operator cockpit. For general workflow layers use [`pi-wishcraft`](https://github.com/GroepOnline/pi-wishcraft), [`pi-missions`](https://github.com/GroepOnline/pi-missions), or [`pi-agent-orchestrator`](https://github.com/GroepOnline/pi-agent-orchestrator).
+
+[Getting started →](docs/getting-started.md) · [Commands →](docs/commands.md) · [Cache optimization →](docs/cache-optimization.md)
 
 ## What changes when the extension is loaded
 
