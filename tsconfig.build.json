@@ -1,36 +1,27 @@
 {
-  "compilerOptions": {
-    "target": "ES2022",
-    "module": "Node16",
-    "lib": [
-      "ES2022"
-    ],
-    "strict": true,
-    "erasableSyntaxOnly": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
-    "declaration": true,
-    "declarationMap": true,
-    "sourceMap": true,
-    "moduleResolution": "Node16",
-    "resolveJsonModule": true,
-    "allowImportingTsExtensions": true,
-    "rewriteRelativeImportExtensions": true,
-    "types": [
-      "node"
-    ],
-    "noEmit": false,
-    "outDir": "dist",
-    "rootDir": "src",
-    "noUnusedLocals": false,
-    "noUnusedParameters": false
-  },
-  "include": [
-    "src/**/*.ts"
-  ],
-  "exclude": [
-    "src/**/*.test.ts",
-    "src/test/**"
-  ]
+	"compilerOptions": {
+		"target": "ES2022",
+		"module": "Node16",
+		"lib": ["ES2022"],
+		"strict": true,
+		"erasableSyntaxOnly": true,
+		"esModuleInterop": true,
+		"skipLibCheck": true,
+		"forceConsistentCasingInFileNames": true,
+		"declaration": true,
+		"declarationMap": true,
+		"sourceMap": true,
+		"moduleResolution": "Node16",
+		"resolveJsonModule": true,
+		"allowImportingTsExtensions": true,
+		"rewriteRelativeImportExtensions": true,
+		"types": ["node"],
+		"noEmit": false,
+		"outDir": "dist",
+		"rootDir": "src",
+		"noUnusedLocals": false,
+		"noUnusedParameters": false
+	},
+	"include": ["src/**/*.ts"],
+	"exclude": ["src/**/*.test.ts", "src/test/**"]
 }
