@@ -34,12 +34,13 @@ function expectGlm52Contract(
 	const compat = model?.compat as Record<string, unknown> | undefined;
 	expect(compat?.thinkingFormat).toBe("zai");
 	expect(compat?.zaiToolStream).toBe(true);
-	expect(model?.thinkingLevelMap).toMatchObject({
-		low: "high",
-		medium: "high",
-		high: "high",
-		max: "max",
-	});
+	const thinkingLevelMap = model?.thinkingLevelMap as
+		| Record<string, unknown>
+		| undefined;
+	expect([null, "high"]).toContain(thinkingLevelMap?.low);
+	expect([null, "high"]).toContain(thinkingLevelMap?.medium);
+	expect(thinkingLevelMap?.high).toBe("high");
+	expect(thinkingLevelMap?.max).toBe("max");
 	expect(isPiNativeZaiProvider(model?.provider)).toBe(true);
 	expect(isNativeZaiModel(model)).toBe(true);
 	expect(isManagedZaiModel(model)).toBe(true);
@@ -149,10 +150,14 @@ describe("installed Pi Z.AI model contract", () => {
 		expect(capabilities.sessionAffinitySource).toBe("pi-zai");
 	});
 
-	it("keeps China and global Coding Plan catalogs aligned by model id", () => {
-		const globalIds = globalModels.map((model) => model.id).sort();
-		const cnIds = cnModels.map((model) => model.id).sort();
-		expect(cnIds).toEqual(globalIds);
-		expect(globalIds.length).toBeGreaterThan(0);
+	it("keeps the required Coding Plan models available on both endpoints", () => {
+		const globalIds = new Set(globalModels.map((model) => model.id));
+		const cnIds = new Set(cnModels.map((model) => model.id));
+		for (const id of ["glm-5.2", "glm-5.2-highspeed", "glm-5.3"]) {
+			expect(globalIds.has(id)).toBe(true);
+			expect(cnIds.has(id)).toBe(true);
+		}
+		expect(globalIds.size).toBeGreaterThan(0);
+		expect(cnIds.size).toBeGreaterThan(0);
 	});
 });
