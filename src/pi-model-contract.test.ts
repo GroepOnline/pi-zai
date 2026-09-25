@@ -1,3 +1,6 @@
+import { readFileSync } from "node:fs";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 import { getBuiltinModels } from "@earendil-works/pi-ai/providers/all";
 import { describe, expect, it } from "vitest";
 import { isCodingPlanProvider } from "./cache/context-policy.ts";
@@ -13,6 +16,18 @@ import type { ZaiModel } from "./zai-model.ts";
 
 const GLOBAL_CODING_BASE = "https://api.z.ai/api/coding/paas/v4";
 const CN_CODING_BASE = "https://open.bigmodel.cn/api/coding/paas/v4";
+const PI_SUPPORT_FLOOR = "0.84.2";
+
+function installedPiAiVersion(): string {
+	const packageRoot = dirname(dirname(fileURLToPath(import.meta.url)));
+	const pkg = JSON.parse(
+		readFileSync(
+			join(packageRoot, "node_modules/@earendil-works/pi-ai/package.json"),
+			"utf8",
+		),
+	) as { version: string };
+	return pkg.version;
+}
 
 function asModelList(value: unknown): ZaiModel[] {
 	if (Array.isArray(value)) return value as ZaiModel[];
@@ -90,19 +105,21 @@ describe("installed Pi Z.AI model contract", () => {
 		}
 	});
 
-	it("exposes glm-5.2-highspeed on both Coding Plan endpoints", () => {
-		for (const [models, provider, baseUrl] of [
-			[globalModels, "zai", GLOBAL_CODING_BASE],
-			[cnModels, "zai-coding-cn", CN_CODING_BASE],
-		] as const) {
-			const model = models.find(
+	it("exposes glm-5.2-highspeed on the global Coding Plan endpoint", () => {
+		const model = globalModels.find(
+			(candidate) => candidate.id === "glm-5.2-highspeed",
+		);
+		expect(model).toBeTruthy();
+		expect(model?.provider).toBe("zai");
+		expect(model?.baseUrl).toBe(GLOBAL_CODING_BASE);
+		expect(model?.contextWindow).toBe(1_000_000);
+		expect(model?.maxTokens).toBe(131_072);
+		if (installedPiAiVersion() === PI_SUPPORT_FLOOR) {
+			const cnModel = cnModels.find(
 				(candidate) => candidate.id === "glm-5.2-highspeed",
 			);
-			expect(model).toBeTruthy();
-			expect(model?.provider).toBe(provider);
-			expect(model?.baseUrl).toBe(baseUrl);
-			expect(model?.contextWindow).toBe(1_000_000);
-			expect(model?.maxTokens).toBe(131_072);
+			expect(cnModel?.provider).toBe("zai-coding-cn");
+			expect(cnModel?.baseUrl).toBe(CN_CODING_BASE);
 		}
 	});
 
@@ -115,12 +132,15 @@ describe("installed Pi Z.AI model contract", () => {
 		expect(inferEndpoint("zai", GLOBAL_CODING_BASE)).toBe("coding");
 	});
 
-	it("exposes glm-5.2 on the China Coding Plan endpoint", () => {
-		expectGlm52Contract(
-			cnModels.find((model) => model.id === "glm-5.2"),
-			"zai-coding-cn",
-			CN_CODING_BASE,
-		);
+	it("exposes glm-5.2 on the China Coding Plan endpoint when Pi still ships it", () => {
+		const model = cnModels.find((candidate) => candidate.id === "glm-5.2");
+		if (installedPiAiVersion() === PI_SUPPORT_FLOOR || model) {
+			expectGlm52Contract(model, "zai-coding-cn", CN_CODING_BASE);
+		} else {
+			expect(cnModels.some((candidate) => candidate.id === "glm-5.3")).toBe(
+				true,
+			);
+		}
 		expect(inferEndpoint("zai-coding-cn", CN_CODING_BASE)).toBe("coding-cn");
 	});
 
@@ -150,12 +170,16 @@ describe("installed Pi Z.AI model contract", () => {
 		expect(capabilities.sessionAffinitySource).toBe("pi-zai");
 	});
 
-	it("keeps the required Coding Plan models available on both endpoints", () => {
+	it("keeps the required Coding Plan models for this Pi release", () => {
 		const globalIds = new Set(globalModels.map((model) => model.id));
 		const cnIds = new Set(cnModels.map((model) => model.id));
-		for (const id of ["glm-5.2", "glm-5.2-highspeed", "glm-5.3"]) {
-			expect(globalIds.has(id)).toBe(true);
-			expect(cnIds.has(id)).toBe(true);
+		expect(globalIds.has("glm-5.3")).toBe(true);
+		expect(cnIds.has("glm-5.3")).toBe(true);
+		expect(globalIds.has("glm-5.2")).toBe(true);
+		expect(globalIds.has("glm-5.2-highspeed")).toBe(true);
+		if (installedPiAiVersion() === PI_SUPPORT_FLOOR) {
+			expect(cnIds.has("glm-5.2")).toBe(true);
+			expect(cnIds.has("glm-5.2-highspeed")).toBe(true);
 		}
 		expect(globalIds.size).toBeGreaterThan(0);
 		expect(cnIds.size).toBeGreaterThan(0);
