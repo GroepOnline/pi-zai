@@ -71,7 +71,7 @@
 		"verify:pi-package": "node scripts/verify-pi-package-contract.mjs"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "2.0.6",
+		"@biomejs/biome": "^2.0.6",
 		"@earendil-works/pi-agent-core": "0.84.2",
 		"@earendil-works/pi-ai": "0.84.2",
 		"@earendil-works/pi-coding-agent": "0.84.2",

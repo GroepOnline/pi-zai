@@ -4,10 +4,10 @@
 // Context: `worker/telemetry` is a private, optional Cloudflare Worker. It is
 // excluded from the published `@groeponline/pi-zai` npm tarball (see the
 // root `package.json` `files` allowlist), so its dev-only dependencies never
-// reach consumers. Its only high-severity exposure is `sharp < 0.35.0`, pulled
-// transitively through `wrangler -> miniflare`. Cloudflare's published
-// `miniflare` still depends on `sharp 0.34.x`, so this advisory is
-// upstream-deferred and not actionable in this repository.
+// reach consumers. `miniflare` pulls `sharp` for local image handling. The
+// worker package pins `sharp` to a patched release via `overrides` when
+// miniflare's own range is behind. Advisories that still cannot be fixed
+// here belong in DEFERRED with an upstream owner and a reason.
 //
 // This script preserves the security value of `npm audit` for the worker: it
 // still FAILS on any high/critical advisory that is not explicitly listed in
@@ -19,18 +19,11 @@ import { exit } from "node:process";
 const WORKER_DIR = "worker/telemetry";
 const GATE_LEVELS = new Set(["critical", "high"]);
 
-// Explicitly deferred high/critical advisories. Each entry MUST state the
-// upstream owner and why it is not fixable in this repo.
-// Advisory IDs are matched case-insensitively (GitHub URLs use lowercase,
-// npm audit sometimes emits uppercase). We normalise to lowercase everywhere.
-const DEFERRED = new Map(
-	[
-		[
-			"GHSA-f88m-g3jw-g9cj",
-			"sharp <0.35.0 libvips CVEs (CVE-2026-33327/33328/35590/35591), pulled via wrangler->miniflare; Cloudflare's published miniflare still pins sharp 0.34.x. Dev-only, not present in the published npm tarball.",
-		],
-	].map(([id, reason]) => [id.toLowerCase(), reason]),
-);
+// Explicitly deferred high/critical advisories. Keys are lowercase GHSA ids
+// (npm audit sometimes emits uppercase). Each entry MUST state the upstream
+// owner and why it is not fixable in this repo. Empty while sharp is pinned
+// to a patched release.
+const DEFERRED = new Map();
 
 function ghsaId(url = "") {
 	const m = String(url).match(/GHSA-[a-z0-9-]+/i);

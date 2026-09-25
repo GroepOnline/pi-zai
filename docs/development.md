@@ -114,7 +114,7 @@ Bind the route to the deployed worker and provide `CLOUDFLARE_API_TOKEN` and `CL
 
 ### Worker audit gate
 
-`scripts/worker-audit.mjs` is the filtered audit gate for the worker. The worker is private and excluded from the published npm tarball, and its only high-severity exposure is `sharp <0.35.0` pulled transitively via `wrangler -> miniflare` (upstream-deferred until Cloudflare ships a miniflare that uses `sharp >=0.35.0`). The gate tolerates only that advisory — documented with its owner and reason in `DEFERRED` — and fails CI on any other high/critical advisory. To tolerate a new advisory, add it to `DEFERRED` with a justification.
+`scripts/worker-audit.mjs` is the filtered audit gate for the worker. The worker is private and excluded from the published npm tarball. `miniflare` pulls `sharp`; `worker/telemetry/package.json` overrides it to a patched release (`0.35.4`, which fixes GHSA-rgj7-g3m4-5g8c). The gate fails CI on any high/critical advisory that is not listed in `DEFERRED`. Add an entry there only when the advisory cannot be fixed in this repo, with the upstream owner and the reason.
 
 ## Releases (maintainers)
 
