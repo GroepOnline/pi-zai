@@ -69,7 +69,7 @@
     "benchmark:cache-affinity": "npm run build && node scripts/cache-affinity-ab.mjs",
     "prepublishOnly": "npm run clean && npm run check:version && npm run build && npm run lint && npm run test && npm run check:consumer-install && npm run verify:pi-package",
     "verify:pi-package": "node scripts/verify-pi-package-contract.mjs",
-    "prepare": "husky"
+    "prepare": "command -v husky >/dev/null 2>&1 && husky || true"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.0.6",
