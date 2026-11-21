@@ -68,7 +68,8 @@
 		"check:consumer-install": "node scripts/check-consumer-install.mjs",
 		"benchmark:cache-affinity": "npm run build && node scripts/cache-affinity-ab.mjs",
 		"prepublishOnly": "npm run clean && npm run check:version && npm run build && npm run lint && npm run test && npm run check:consumer-install && npm run verify:pi-package",
-		"verify:pi-package": "node scripts/verify-pi-package-contract.mjs"
+		"verify:pi-package": "node scripts/verify-pi-package-contract.mjs",
+		"prepare": "command -v husky >/dev/null 2>&1 && husky || true"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "^2.0.6",
@@ -76,14 +77,17 @@
 		"@earendil-works/pi-ai": "0.84.2",
 		"@earendil-works/pi-coding-agent": "1.5.0",
 		"@types/node": "26.1.1",
+		"husky": "^9.1.7",
+		"lint-staged": "^17.6.1",
+		"prettier": "^3.10.1",
 		"shx": "0.4.0",
+		"typebox": "^1.1.38",
 		"typescript": "7.0.2",
-		"vitest": "4.1.12",
-		"typebox": "^1.1.38"
+		"vitest": "4.1.12"
 	},
 	"peerDependencies": {
-		"@earendil-works/pi-ai": "*",
 		"@earendil-works/pi-agent-core": "*",
+		"@earendil-works/pi-ai": "*",
 		"@earendil-works/pi-coding-agent": "*",
 		"typebox": "*"
 	},
